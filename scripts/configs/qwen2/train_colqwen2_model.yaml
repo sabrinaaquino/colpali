@@ -53,6 +53,7 @@ config:
     # optim: "paged_adamw_8bit"
     warmup_steps: 100
     lr_scheduler_type: "cosine_with_min_lr" # "linear" / cosine_with_min_lr / warmup_stable_decay
+    min_lr: 1e-6
 
   peft_config:
     (): peft.LoraConfig
