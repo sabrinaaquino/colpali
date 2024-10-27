@@ -42,6 +42,7 @@ class ColModelTrainingConfig:
     dataset_loading_func: Optional[Callable] = None
     eval_dataset_loader: Optional[Dict[str, Callable]] = None
     pretrained_peft_model_name_or_path: Optional[str] = None
+    compile_model: bool = False
 
     def __post_init__(self):
         """
@@ -116,6 +117,10 @@ class ColModelTraining:
             print("Training with hard negatives")
         else:
             print("Training with in-batch negatives")
+
+        # compile model
+        if self.config.compile_model:
+            self.model = torch.compile(self.model)
 
         trainer = ContrastiveTrainer(
             model=self.model,
