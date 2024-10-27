@@ -1,6 +1,6 @@
 config:
   (): colpali_engine.trainer.colmodel_training.ColModelTrainingConfig
-  output_dir: !path ../../../models/colqwen2-ba64-highres
+  output_dir: !path ../../../models/colqwen2-ba64-ct
   processor:
     (): colpali_engine.utils.transformers_wrappers.AllPurposeWrapper
     class_to_instanciate: !ext colpali_engine.models.ColQwen2Processor
@@ -30,12 +30,12 @@ config:
   run_eval: true
   add_suffix: true
   loss_func:
-    (): colpali_engine.loss.late_interaction_losses.ColbertPairwiseCELoss
+    (): colpali_engine.loss.late_interaction_losses.ColbertLoss
   tr_args:
     (): transformers.training_args.TrainingArguments
     output_dir: null
     overwrite_output_dir: true
-    num_train_epochs: 3
+    num_train_epochs: 2
     per_device_train_batch_size: 64
     gradient_checkpointing: true
     # 6 x 8 gpus = 48 batch size
@@ -52,8 +52,8 @@ config:
     # resume_from_checkpoint: true
     # optim: "paged_adamw_8bit"
     warmup_steps: 100
-    lr_scheduler_type: "cosine_with_min_lr" # "linear" / cosine_with_min_lr / warmup_stable_decay
-    lr_scheduler_kwargs: {"min_lr": 0.000001}
+    # lr_scheduler_type: "cosine_with_min_lr" # "linear" / cosine_with_min_lr / warmup_stable_decay
+    # lr_scheduler_kwargs: {"min_lr": 0.000001}
 
   peft_config:
     (): peft.LoraConfig
