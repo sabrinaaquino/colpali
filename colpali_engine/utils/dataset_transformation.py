@@ -32,11 +32,16 @@ def load_train_set_hack() -> DatasetDict:
     for split in ds_dict.keys():
         seen_filenames = set()
 
-        # Use `filter` to keep only the first occurrence of each "image_filename"
-        ds_dict[split] = ds_dict[split].filter(
-            lambda example: example["image_filename"] not in seen_filenames and not seen_filenames.add(
-                example["image_filename"]), num_proc=8
-        )
+        # first iterate over the dataset to get the indexes of the first occurrence of each "image_filename"
+        first_occurrence_indexes = []
+        for i, example in enumerate(ds_dict[split]):
+            if example["image_filename"] not in seen_filenames:
+                first_occurrence_indexes.append(i)
+                seen_filenames.add(example["image_filename"])
+
+        # then filter the dataset to keep only the first occurrence of each "image_filename"
+        ds_dict[split] = ds_dict[split].select(first_occurrence_indexes)
+
 
     # print dataset size
     print(f"Dataset size after filtering: {len(ds_dict['train'])}")
