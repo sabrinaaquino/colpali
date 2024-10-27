@@ -36,7 +36,7 @@ class ColQwen2Processor(BaseVisualRetrieverProcessor, Qwen2VLProcessor):
     # FIXME: `query_augmentation_token` was set to hardcoded value "<pad>" in the original code used to train
     # "vidore/colqwen2-v0.1", while it should have been set to `processor.tokenizer.pad_token`.
     # TODO: Fix training script for next ColQwen2 release.
-    query_augmentation_token: ClassVar[str] = "<pad>"
+    query_augmentation_token: ClassVar[str] = "<|endoftext|>"
 
     image_token: ClassVar[str] = "<|image_pad|>"
 
