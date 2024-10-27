@@ -33,15 +33,14 @@ def load_train_set_hack() -> DatasetDict:
     # Iterate over each split in ds_dict and keep only the first sample per unique "image_filename"
     for split in ds_dict.keys():
         seen_filenames = set()
-
         # first iterate over the dataset to get the indexes of the first occurrence of each "image_filename"
         # filenames
-        filenames = ds_dict[split]["image_filename"]
+        img_filenames = ds_dict[split]["image_filename"]
 
-        print(len(filenames))
+        print(len(img_filenames))
 
         first_occurrence_indexes = []
-        for i, filename in enumerate(filenames):
+        for i, filename in enumerate(img_filenames):
             if filename not in seen_filenames:
                 first_occurrence_indexes.append(i)
                 seen_filenames.add(filename)
