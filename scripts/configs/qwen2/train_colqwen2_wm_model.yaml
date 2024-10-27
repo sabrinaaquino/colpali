@@ -53,8 +53,8 @@ config:
     # resume_from_checkpoint: true
     # optim: "paged_adamw_8bit"
     warmup_steps: 100
-    lr_scheduler_type: "cosine_with_min_lr" # "linear" / cosine_with_min_lr / warmup_stable_decay
-    lr_scheduler_kwargs: {"min_lr": 000001}
+    # lr_scheduler_type: "cosine_with_min_lr" # "linear" / cosine_with_min_lr / warmup_stable_decay
+    # lr_scheduler_kwargs: {"min_lr": 000001}
 
   peft_config:
     (): peft.LoraConfig
