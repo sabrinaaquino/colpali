@@ -3,6 +3,8 @@ from typing import List, Tuple, cast
 
 from datasets import Dataset, DatasetDict, concatenate_datasets, load_dataset
 
+from scripts.compute_hardnegs import filenames
+
 USE_LOCAL_DATASET = os.environ.get("USE_LOCAL_DATASET", "1") == "1"
 
 
@@ -33,11 +35,19 @@ def load_train_set_hack() -> DatasetDict:
         seen_filenames = set()
 
         # first iterate over the dataset to get the indexes of the first occurrence of each "image_filename"
+        # filenames
+        filenames = ds_dict[split]["image_filename"]
+
+        print(len(filenames))
+
         first_occurrence_indexes = []
-        for i, example in enumerate(ds_dict[split]):
-            if example["image_filename"] not in seen_filenames:
+        for i, filename in enumerate(filenames):
+            if filename not in seen_filenames:
                 first_occurrence_indexes.append(i)
-                seen_filenames.add(example["image_filename"])
+                seen_filenames.add(filename)
+
+        # now select only the first occurrence of each "image_filename"
+        print(len(first_occurrence_indexes))
 
         # then filter the dataset to keep only the first occurrence of each "image_filename"
         ds_dict[split] = ds_dict[split].select(first_occurrence_indexes)
