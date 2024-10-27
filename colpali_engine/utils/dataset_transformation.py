@@ -35,7 +35,7 @@ def load_train_set_hack() -> DatasetDict:
         # Use `filter` to keep only the first occurrence of each "image_filename"
         ds_dict[split] = ds_dict[split].filter(
             lambda example: example["image_filename"] not in seen_filenames and not seen_filenames.add(
-                example["image_filename"])
+                example["image_filename"]), num_proc=8
         )
 
     # print dataset size
