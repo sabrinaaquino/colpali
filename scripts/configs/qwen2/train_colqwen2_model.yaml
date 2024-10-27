@@ -1,6 +1,6 @@
 config:
   (): colpali_engine.trainer.colmodel_training.ColModelTrainingConfig
-  output_dir: !path ../../../models/colqwen2-ba32-highres
+  output_dir: !path ../../../models/colqwen2-ba64-highres
   processor:
     (): colpali_engine.utils.transformers_wrappers.AllPurposeWrapper
     class_to_instanciate: !ext colpali_engine.models.ColQwen2Processor
@@ -23,7 +23,7 @@ config:
 #      bnb_4bit_compute_dtype:  "bfloat16"
 #      bnb_4bit_use_double_quant: true
 
-  dataset_loading_func: !ext colpali_engine.utils.dataset_transformation.load_train_set
+  dataset_loading_func: !ext colpali_engine.utils.dataset_transformation.load_train_set_hack
   eval_dataset_loader: !import ../data/test_data.yaml
 
   # max_length: 50

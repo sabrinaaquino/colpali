@@ -20,6 +20,28 @@ def load_train_set() -> DatasetDict:
     ds_dict = cast(DatasetDict, load_dataset(base_path + ds_path))
     return ds_dict
 
+def load_train_set_hack() -> DatasetDict:
+    ds_path = "colpali_train_set"
+    base_path = "./data_dir/" if USE_LOCAL_DATASET else "vidore/"
+    ds_dict = cast(DatasetDict, load_dataset(base_path + ds_path))
+
+    # print dataset size
+    print(f"Dataset size: {len(ds_dict['train'])}")
+
+    # Iterate over each split in ds_dict and keep only the first sample per unique "image_filename"
+    for split in ds_dict.keys():
+        seen_filenames = set()
+
+        # Use `filter` to keep only the first occurrence of each "image_filename"
+        ds_dict[split] = ds_dict[split].filter(
+            lambda example: example["image_filename"] not in seen_filenames and not seen_filenames.add(
+                example["image_filename"])
+        )
+
+    # print dataset size
+    print(f"Dataset size after filtering: {len(ds_dict['train'])}")
+    return ds_dict
+
 
 def load_train_set_detailed() -> DatasetDict:
     ds_paths = [
